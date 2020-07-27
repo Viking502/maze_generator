@@ -32,13 +32,13 @@ class Maze:
         for y, row in enumerate(self.grid, 1):
             for x, wall in enumerate(row, 1):
                 # vertical wall
-                color = (40, 80, 40)
+                color = (40, 40, 40)
                 if wall['horizontal']:
                     color = (220, 220, 200)
                 pg.draw.line(win, color, [x * self.tileSize, y * self.tileSize],
                              [(x + 1) * self.tileSize, y * self.tileSize])
                 # vertical wall
-                color = (40, 80, 40)
+                color = (40, 40, 40)
                 if wall['vertical']:
                     color = (220, 220, 200)
                 pg.draw.line(win, color, [x * self.tileSize, y * self.tileSize],
@@ -52,6 +52,13 @@ class Maze:
                 # horizontal
                 pg.draw.line(win, (220, 220, 200), [self.tileSize, height * self.tileSize],
                              [width * self.tileSize, height * self.tileSize])
+
+    def build_walls(self):
+        self.grid = [[{
+            'horizontal': True,
+            'vertical': True}
+            for _ in range(self.width)]
+            for _ in range(self.height)]
 
     @staticmethod
     def rand_cost():
@@ -89,9 +96,10 @@ if __name__ == '__main__':
 
     windowSize = [1200, 900]
     window = pg.display.set_mode(windowSize)
+    pg.display.set_caption('maze generator')
     clock = pg.time.Clock()
 
-    # prepare maze
+    # prepare initial maze
     maze.prime_mst()
 
     runFlag = True
@@ -101,6 +109,10 @@ if __name__ == '__main__':
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 runFlag = False
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_SPACE:
+                    maze.build_walls()
+                    maze.prime_mst()
 
         window.fill((0, 0, 0))
         maze.draw(window)
