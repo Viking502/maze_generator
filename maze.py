@@ -28,6 +28,7 @@ class Maze:
         pg.draw.rect(win, (0, 200, 0), pg.Rect(
             (self.end_point[0] + 1) * self.tileSize, (self.end_point[1] + 1) * self.tileSize,
             self.tileSize, self.tileSize))
+        line_size = 4
         # grid
         for y, row in enumerate(self.grid, 1):
             for x, wall in enumerate(row, 1):
@@ -36,22 +37,26 @@ class Maze:
                 if wall['horizontal']:
                     color = (220, 220, 200)
                 pg.draw.line(win, color, [x * self.tileSize, y * self.tileSize],
-                             [(x + 1) * self.tileSize, y * self.tileSize])
+                             [(x + 1) * self.tileSize, y * self.tileSize], line_size)
                 # vertical wall
                 color = (40, 40, 40)
                 if wall['vertical']:
                     color = (220, 220, 200)
                 pg.draw.line(win, color, [x * self.tileSize, y * self.tileSize],
-                             [x * self.tileSize, (y + 1) * self.tileSize])
+                             [x * self.tileSize, (y + 1) * self.tileSize], line_size)
                 # outline
                 height = self.height + 1
                 width = self.width + 1
                 # vertical
+                pg.draw.line(win, (220, 220, 200), [self.tileSize, self.tileSize],
+                             [self.tileSize, height * self.tileSize], line_size)
                 pg.draw.line(win, (220, 220, 200), [width * self.tileSize, self.tileSize],
-                             [width * self.tileSize, height * self.tileSize])
+                             [width * self.tileSize, height * self.tileSize], line_size)
                 # horizontal
+                pg.draw.line(win, (220, 220, 200), [self.tileSize, self.tileSize],
+                             [width * self.tileSize, self.tileSize], line_size)
                 pg.draw.line(win, (220, 220, 200), [self.tileSize, height * self.tileSize],
-                             [width * self.tileSize, height * self.tileSize])
+                             [width * self.tileSize, height * self.tileSize], line_size)
 
     def build_walls(self):
         self.grid = [[{
